@@ -32,7 +32,19 @@
    - 复杂的OA系统需要用户花费大量时间学习
    - 对于技术水平较低的用户使用门槛高
    - 培训成本高
-![通讯录](images/多种用法.png)
+   - 
+<div style="display: flex; justify-content: space-around; align-items: flex-start;">
+    
+    <img src="images/多种用法.png" alt="多种用法" style="width: 30%; margin: 5px;">
+    
+    <img src="images/通讯录.png" alt="通讯录" style="width: 30%; margin: 5px;">
+    
+    <img src="images/请假页面.png" alt="请假页面" style="width: 30%; margin: 5px;">
+
+</div>
+
+
+
 ## 项目创新点
 
 本项目充分利用大模型的强大能力，设计了一个既智能又高效的办公解决方案，旨在通过智能化的交互方式提升办公效率和用户体验。
@@ -85,7 +97,7 @@
 - **快捷跳转**：识别到业务意图后，直接提供链接跳转到对应页面
 - **上下文记忆**：支持短期对话历史和长期业务信息记忆
 
-![通讯录](images/通讯录.png)
+
 
 ### 业务功能
 
@@ -276,5 +288,6 @@ python app.py
 - 研究和演示项目：展示AI在OA系统中的落地方式
 
 - 学术研究项目：探索大模型在办公自动化中的应用
+
 
 
