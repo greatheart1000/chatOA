@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="light" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>公司通讯录</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A90E2",
+                        "background-light": "#F4F6F8",
+                        "background-dark": "#111621",
+                        "text-light-primary": "#333333",
+                        "text-dark-primary": "#E0E0E0",
+                        "text-light-secondary": "#777777",
+                        "text-dark-secondary": "#A0A0A0",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1A2233",
+                        "border-light": "#EAECEF",
+                        "border-dark": "#2C3A56",
+                        "accent-green": "#50E3C2",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary">
+<div class="flex flex-col h-screen">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light dark:border-border-dark px-6 py-3 bg-card-light dark:bg-card-dark shrink-0">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-text-light-primary dark:text-text-dark-primary">
+<div class="size-6 text-primary">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold tracking-tight">公司通讯录</h2>
+</div>
+</div>
+<div class="w-full max-w-lg">
+<label class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-text-light-secondary dark:text-text-dark-secondary">search</span>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary focus:outline-none focus:ring-2 focus:ring-primary h-10 placeholder:text-text-light-secondary dark:placeholder:text-text-dark-secondary pl-10 pr-4 text-sm font-normal border-border-light dark:border-border-dark focus:border-primary" placeholder="搜索员工或部门..." value=""/>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-background-light dark:bg-background-dark text-text-light-secondary dark:text-text-dark-secondary hover:bg-primary/10 hover:text-primary">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-background-light dark:bg-background-dark text-text-light-secondary dark:text-text-dark-secondary hover:bg-primary/10 hover:text-primary">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAHrbb0u_yX4QVGC20Y7CRKRVuuH6ekZrFIDA3XDqnUvG7REpho9xlj1SSjWQoxh6EE-MbjWW1Hs7k3yZbjnQTokPBzNuzwObBubm6c8NB6clICz_rTHCNVjc2w1Qrw3SJ0FXcupG8LgxpZgS4pYd7n3a0IfSUxkPv4Cxt_d9XBisvVUvFa8loSZyw4cTLtsa80XS6DyrPxx_VWvhKreg8moh07MfL3vpLg95XADUT-ohaoKYf8FzC8oLyRQ6tLJv-nduLWaMHHxVI");'></div>
+</div>
+</header>
+<main class="flex-grow flex overflow-hidden">
+<aside class="w-64 shrink-0 flex flex-col justify-between bg-card-light dark:bg-card-dark p-4 border-r border-solid border-border-light dark:border-border-dark">
+<div class="flex flex-col gap-6">
+<div>
+<h1 class="text-base font-semibold">部门</h1>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">company.com</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary/10" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">code</span>
+<span>技术部</span>
+</div>
+<span class="text-xs font-mono bg-background-light dark:bg-background-dark px-2 py-0.5 rounded-full text-text-light-secondary dark:text-text-dark-secondary">12</span>
+</a>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm font-medium bg-primary/10 text-primary" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">campaign</span>
+<span>市场部</span>
+</div>
+<span class="text-xs font-mono bg-primary/20 text-primary px-2 py-0.5 rounded-full">4</span>
+</a>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary/10" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">trending_up</span>
+<span>销售部</span>
+</div>
+<span class="text-xs font-mono bg-background-light dark:bg-background-dark px-2 py-0.5 rounded-full text-text-light-secondary dark:text-text-dark-secondary">8</span>
+</a>
+<a class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary/10" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">groups</span>
+<span>人力资源部</span>
+</div>
+<span class="text-xs font-mono bg-background-light dark:bg-background-dark px-2 py-0.5 rounded-full text-text-light-secondary dark:text-text-dark-secondary">5</span>
+</a>
+</nav>
+</div>
+</aside>
+<div class="flex-grow flex flex-col p-6 overflow-hidden">
+<div class="flex flex-wrap gap-2 items-center mb-4 shrink-0">
+<a class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-medium hover:text-primary" href="#">首页</a>
+<span class="material-symbols-outlined text-lg text-text-light-secondary dark:text-text-dark-secondary">chevron_right</span>
+<a class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-medium hover:text-primary" href="#">市场部</a>
+<span class="material-symbols-outlined text-lg text-text-light-secondary dark:text-text-dark-secondary">chevron_right</span>
+<span class="text-text-light-primary dark:text-text-dark-primary text-sm font-medium">张三</span>
+</div>
+<div class="flex-grow grid grid-cols-12 gap-6 overflow-hidden">
+<div class="col-span-4 flex flex-col overflow-hidden">
+<div class="flex justify-between items-baseline px-2 pb-3 shrink-0">
+<h2 class="text-xl font-bold tracking-tight">市场部团队</h2>
+<span class="text-sm text-text-light-secondary dark:text-text-dark-secondary">4 人</span>
+</div>
+<div class="flex-grow overflow-y-auto space-y-2 pr-2">
+<div class="flex items-center gap-4 bg-primary/10 dark:bg-primary/20 p-3 rounded-lg border border-primary/30">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12" data-alt="Profile picture of John Doe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpuQHMMBAX5ZHr0Gn1e42r4vDhjrrTL7yh5zAZK9tmhlcoTBBUy7pmpUy1eupMUV3gXMOfXaJM8sAEQDBXkbr0iKqqYmg2JY7bGXDbDq0rvc_HElZL361geydW4zPiFsFcrYHNfJtV3LD9lrwTTLUR-ZqzmrYLuKfO8IXAK_OFnqzHxPwhVmOdoyuioh8WwdZxZRxXiGmcYk4N7i8ugXJmsBVHhsrM4KbHEgJKXnkgWm35cuPvPoPMyxv1EDUAH2I5XByiSDb8Iuk");'></div>
+<div class="flex-grow">
+<p class="text-text-light-primary dark:text-text-dark-primary text-base font-semibold line-clamp-1">张三</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal line-clamp-1">市场经理</p>
+</div>
+<div class="shrink-0 text-primary">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-3 rounded-lg hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12" data-alt="Profile picture of Jane Smith" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPYtZOX5mFowty7IXR_jVRoZ6QG2fwBL376Rbuaz0CVtk7C_Y0cz-7YyQAuyydcravSqQVOLl10epA8IkXTlM0uMC5CKSbBhtYFclTmF3eK9xUQlm8znAltVO9QkMTj_z5ZhaxWvs2oNLv-nsFlh09R3kzYXFtQzgT8c-buwfOeNObuzqixzrTd-iV8_YPasCfzzb6MexTOJAJsTG5K0OvIbi6C2O7r4tjGG15Pi-hR7i2IQyK5QtwZLSn3lcgqj9R-wsHx0GHJM4");'></div>
+<div class="flex-grow">
+<p class="text-base font-semibold line-clamp-1">李华</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal line-clamp-1">内容策略师</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-3 rounded-lg hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12" data-alt="Profile picture of Michael Brown" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAOYDjCnCTi_MUE3nnOUQ3CE8iDGCy8v3r0gWcnclkzpQC7rEzgUZubeTDQ80WgreKFEPZsvCyZdJnHCUHeMOM2qC_oThFUUG61mXugJ9JyZ7V08isI1z2Bp4TRp3Q5m5MCz7YK762nqbwsjCi7fw-vXmYJ1XjWGZR2vGhFoD1WY6s-a-f4DfRlhYRe8tjMV-qJT9WlcV0peXjLOTB06WLzJINBy7-0oeFSldQMMXVvofOGFW7mqiuctNus1-VOFNhC_UYV-bEYfoM");'></div>
+<div class="flex-grow">
+<p class="text-base font-semibold line-clamp-1">王明</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal line-clamp-1">SEO专员</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-card-light dark:bg-card-dark p-3 rounded-lg hover:bg-primary/5 dark:hover:bg-primary/10 cursor-pointer">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12" data-alt="Profile picture of Emily Jones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7kn8H-7JwR-0Dp3InOoQSMxF0l8ixZoQEE6IGR9jvuw4fWvQTdUBgEZul_xZsBlwkcsasj3Zqh_Dn6wXaegHZD2UxRNDBE7r0WZS6OjYSY7FKIvxyGrdNc5Qk2JST2dKX6YEkIy3VwOCVaCQQrsx3bGkMFJhbWUjCeqhoJ2kP-5BKPDwwUsYyt5mSZGb85IEFKM_5SCcEkfutjrqhsmAo9VbPdp5ai3x4zydaMSYHVtKsSx2_7ysIverfTD5B4bdytnSyRq5_de8");'></div>
+<div class="flex-grow">
+<p class="text-base font-semibold line-clamp-1">赵丽</p>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm font-normal line-clamp-1">社交媒体协调员</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-8 flex flex-col bg-card-light dark:bg-card-dark rounded-xl p-6 overflow-y-auto">
+<div class="flex flex-col items-center text-center">
+<div class="relative mb-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-24" data-alt="Profile picture of John Doe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD2hEGij0wv4f0AzX1rYWXYOAht4h1hHce6_Jn7zRghvyGROpQv2qTyaWmFoexKmGMjSmDqEC0s-WYmdGTrfZDiDw8m8iUIAQjqKdlefw-90esVyNhU-lmOpSM6IsrfYRUclgYS5ad68w7ZqK7q-juANSkAtLi5IDSDys0NIdKMG1lMek8mUIvjkGm0IO1YIlOj2PGxNz2yXIt1Twsomv03Hit4Kh8ezAfEcmb6n0GmXxWHGWzmxavCaSnwRWtVset0W8IO1OwiOFc");'></div>
+<div class="absolute bottom-1 right-1 size-5 rounded-full bg-accent-green border-2 border-card-light dark:border-card-dark"></div>
+</div>
+<h1 class="text-2xl font-bold">张三</h1>
+<p class="text-text-light-secondary dark:text-text-dark-secondary">市场经理 • 市场部</p>
+<div class="flex items-center gap-1.5 mt-2 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+<span class="material-symbols-outlined text-base">work_history</span>
+<span>在公司工作5年</span>
+</div>
+</div>
+<div class="flex justify-center gap-2 my-6">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-primary text-white gap-2 text-sm font-semibold px-4">
+<span class="material-symbols-outlined text-base">mail</span>
+                                发送邮件
+                            </button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary gap-2 text-sm font-semibold px-4 border border-border-light dark:border-border-dark">
+<span class="material-symbols-outlined text-base">chat</span>
+                                开始聊天
+                            </button>
+</div>
+<div class="space-y-6 pt-6 border-t border-border-light dark:border-border-dark">
+<div>
+<h3 class="font-semibold text-sm mb-3 text-text-light-secondary dark:text-text-dark-secondary uppercase tracking-wider">联系方式</h3>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-lg text-text-light-secondary dark:text-text-dark-secondary mt-0.5">mail</span>
+<div>
+<p class="text-text-light-secondary dark:text-text-dark-secondary">邮箱</p>
+<p class="font-medium text-text-light-primary dark:text-text-dark-primary">zhangsan@company.com</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-lg text-text-light-secondary dark:text-text-dark-secondary mt-0.5">phone</span>
+<div>
+<p class="text-text-light-secondary dark:text-text-dark-secondary">电话</p>
+<p class="font-medium text-text-light-primary dark:text-text-dark-primary">(010) 1234-5678 分机 123</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-lg text-text-light-secondary dark:text-text-dark-secondary mt-0.5">location_on</span>
+<div>
+<p class="text-text-light-secondary dark:text-text-dark-secondary">位置</p>
+<p class="font-medium text-text-light-primary dark:text-text-dark-primary">北京办公室，12层</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-lg text-text-light-secondary dark:text-text-dark-secondary mt-0.5">calendar_today</span>
+<div>
+<p class="text-text-light-secondary dark:text-text-dark-secondary">入职日期</p>
+<p class="font-medium text-text-light-primary dark:text-text-dark-primary">2019年8月15日</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-semibold text-sm mb-3 text-text-light-secondary dark:text-text-dark-secondary uppercase tracking-wider">简介</h3>
+<p class="text-sm leading-relaxed">
+                                    作为市场经理，张三领导市场团队，专注于创新的数字营销活动和品牌增长。拥有十多年的经验，他热衷于数据驱动的策略和创意故事讲述。
+                                </p>
+</div>
+<div>
+<h3 class="font-semibold text-sm mb-3 text-text-light-secondary dark:text-text-dark-secondary uppercase tracking-wider">组织架构</h3>
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-10 w-10" data-alt="头像" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJAsSRYBxJgCRfnLS2QS67gFXblFJUSLODG6vPVsC2Hr3zFdUNttA2d7dCgGS-tSx37kgbSjVlDCLB9NCNdt0iRwDudxndgdrxfplR-KDVA7nSHD0gvaCkHKZ-nYwuiiUnqBuBzwxfqbB4kmZYpDU11ro8uhkzQB5KAJUSlPbLwDMDCyQwRh_jDZ6LcVTxIpOjMu9NHynPayQj92fJiVZrzXKmYwdciQ7Hn14ZDqxFCCxJVhzrtfsXDmJWAKi_aI43luuJBwbJqQo");'></div>
+<div>
+<p class="text-text-light-secondary dark:text-text-dark-secondary text-sm">汇报对象</p>
+<p class="font-medium text-text-light-primary dark:text-text-dark-primary text-sm">李总</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

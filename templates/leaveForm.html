@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="light" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>请假申请</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+      @layer base {
+        :root {
+          --rainbow-gradient: linear-gradient(to right, #fb7185, #fdba74, #fde047, #86efac, #93c5fd, #c4b5fd);
+        }
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#195de6",
+              "background-light": "#f7f9fa",
+              "background-dark": "#111621",
+            },
+            fontFamily: {
+              "display": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#333333] dark:text-gray-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-transparent px-6 sm:px-10 lg:px-20 py-3 bg-white dark:bg-background-dark shadow-sm">
+<div class="flex items-center gap-4 text-[#0e121b] dark:text-white">
+<div class="size-8 text-indigo-400">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 10.5V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h12.5"></path>
+<path d="M16 2v4"></path>
+<path d="M8 2v4"></path>
+<path d="M3 10h19"></path>
+<path d="M21.25 18.75 18.75 15"></path>
+<path d="m15 18.75 2.5 2.5"></path>
+</svg>
+</div>
+<h2 class="text-[#0e121b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">请假管理</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<a class="text-[#333333] dark:text-gray-300 text-sm font-medium leading-normal hidden md:block hover:text-indigo-400 transition-colors" href="/">返回聊天</a>
+<button onclick="window.location.href='/'" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gradient-to-r from-purple-400 to-indigo-500 text-white text-sm font-bold leading-normal tracking-[0.015em] hover:from-purple-500 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105">
+<span class="truncate">返回</span>
+</button>
+</div>
+</header>
+<main class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-wrap justify-between gap-4 mb-8 items-center">
+<div class="flex min-w-72 flex-col gap-1">
+<p class="text-4xl sm:text-5xl font-black tracking-[-0.033em] bg-clip-text text-transparent bg-[var(--rainbow-gradient)]">需要请假？</p>
+<p class="text-[#4e6797] dark:text-gray-400 text-base font-normal leading-normal">请填写下面的详细信息！</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 bg-white dark:bg-background-dark border border-[#e0e0e0] dark:border-gray-700 rounded-xl shadow-sm">
+<form id="leaveForm" onsubmit="submitLeave(event)">
+<div class="p-6">
+<h2 class="text-[#0e121b] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em] pb-6">请假详情</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="md:col-span-2">
+<label class="flex flex-col">
+<p class="text-[#0e121b] dark:text-gray-200 text-sm font-medium leading-normal pb-2">申请人姓名</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-500 dark:text-gray-400 focus:outline-0 focus:ring-0 border border-[#e0e0e0] dark:border-gray-700 bg-gray-100 dark:bg-gray-800 focus:border-[#e0e0e0] h-12 px-4 text-base font-normal leading-normal" readonly="" id="applicantName" value="{{ name or '张三' }}"/>
+</label>
+</div>
+<div>
+<label class="flex flex-col">
+<p class="text-[#0e121b] dark:text-gray-200 text-sm font-medium leading-normal pb-2">请假类型</p>
+<select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#333333] dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 border border-[#e0e0e0] dark:border-gray-700 bg-white dark:bg-gray-800/50 h-12 px-4 text-base font-normal leading-normal" id="leaveType" required>
+<option value="">请选择请假类型</option>
+<option value="事假">事假</option>
+<option value="病假">病假</option>
+<option value="年假">年假</option>
+<option value="调休">调休</option>
+</select>
+</label>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="flex flex-col">
+<p class="text-[#0e121b] dark:text-gray-200 text-sm font-medium leading-normal pb-2">开始时间</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#333333] dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 border border-[#e0e0e0] dark:border-gray-700 bg-white dark:bg-gray-800/50 h-12 px-4 text-base font-normal leading-normal" type="datetime-local" id="startDate" required/>
+</label>
+</div>
+<div>
+<label class="flex flex-col">
+<p class="text-[#0e121b] dark:text-gray-200 text-sm font-medium leading-normal pb-2">结束时间</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#333333] dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 border border-[#e0e0e0] dark:border-gray-700 bg-white dark:bg-gray-800/50 h-12 px-4 text-base font-normal leading-normal" type="datetime-local" id="endDate" required/>
+</label>
+</div>
+</div>
+<div class="md:col-span-2">
+<label class="flex flex-col">
+<p class="text-[#0e121b] dark:text-gray-200 text-sm font-medium leading-normal pb-2">请假事由</p>
+<textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-[#333333] dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 border border-[#e0e0e0] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-4 text-base font-normal leading-normal" placeholder="请简要说明请假原因..." rows="4" id="reason" required></textarea>
+</label>
+</div>
+</div>
+</div>
+<div class="flex justify-end gap-4 p-6 border-t border-[#e0e0e0] dark:border-gray-700 bg-background-light dark:bg-gray-900/30 rounded-b-xl">
+<button type="button" onclick="window.location.href='/'" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-200 dark:bg-gray-700 text-[#333333] dark:text-gray-200 text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+<span class="truncate">取消</span>
+</button>
+<button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gradient-to-r from-green-300 to-blue-400 text-white text-sm font-bold leading-normal tracking-[0.015em] hover:from-green-400 hover:to-blue-500 transition-all duration-300 transform hover:scale-105">
+<span class="truncate">提交申请</span>
+</button>
+</div>
+</form>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-white dark:bg-background-dark border border-[#e0e0e0] dark:border-gray-700 rounded-xl shadow-sm p-6 sticky top-8">
+<h2 class="text-[#0e121b] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em] mb-6">审批流程</h2>
+<ol class="relative border-l-2 border-dashed border-gray-200 dark:border-gray-700 ml-3">
+<li class="mb-10 ml-6">
+<span class="absolute flex items-center justify-center w-8 h-8 bg-rose-100 dark:bg-rose-900/50 rounded-full -left-4 ring-4 ring-white dark:ring-background-dark">
+<span class="material-symbols-outlined text-rose-500 dark:text-rose-400 text-base">person_alert</span>
+</span>
+<h3 class="flex items-center mb-1 text-base font-semibold text-gray-900 dark:text-white">经理审批</h3>
+<time class="block mb-2 text-sm font-normal leading-none text-rose-500 dark:text-rose-400">待处理</time>
+</li>
+<li class="mb-10 ml-6">
+<span class="absolute flex items-center justify-center w-8 h-8 bg-amber-100 dark:bg-amber-900/50 rounded-full -left-4 ring-4 ring-white dark:ring-background-dark">
+<span class="material-symbols-outlined text-amber-500 dark:text-amber-400 text-base">corporate_fare</span>
+</span>
+<h3 class="mb-1 text-base font-semibold text-gray-900 dark:text-white">人事部门审核</h3>
+<time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">等待经理审批</time>
+</li>
+<li class="ml-6">
+<span class="absolute flex items-center justify-center w-8 h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-full -left-4 ring-4 ring-white dark:ring-background-dark">
+<span class="material-symbols-outlined text-emerald-500 dark:text-emerald-400 text-base">verified</span>
+</span>
+<h3 class="mb-1 text-base font-semibold text-gray-900 dark:text-white">最终状态</h3>
+<time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">待处理</time>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<script>
+// 从后端传递的数据
+const formDataFromBackend = {
+    leave_type: {{ leave_type|tojson|safe }},
+    start_time: {{ start_time|tojson|safe }},
+    end_time: {{ end_time|tojson|safe }},
+    reason: {{ reason|tojson|safe }},
+    name: {{ name|tojson|safe }},
+    employee_id: {{ employee_id|tojson|safe }}
+};
+
+function submitLeave(event) {
+    event.preventDefault();
+    const formData = {
+        leave_type: document.getElementById('leaveType').value,
+        start_time: document.getElementById('startDate').value,
+        end_time: document.getElementById('endDate').value,
+        reason: document.getElementById('reason').value,
+        employee_id: formDataFromBackend.employee_id
+    };
+    
+    fetch('/send_message', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            message: `申请请假：类型${formData.leave_type}，开始时间${formData.start_time}，结束时间${formData.end_time}，事由${formData.reason}`
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('请假申请已提交！');
+        window.location.href = '/';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('提交失败，请稍后重试');
+    });
+}
+
+// 页面加载后填充表单数据
+document.addEventListener('DOMContentLoaded', function() {
+    if (formDataFromBackend.leave_type) {
+        document.getElementById('leaveType').value = formDataFromBackend.leave_type;
+    }
+    if (formDataFromBackend.start_time) {
+        document.getElementById('startDate').value = formDataFromBackend.start_time;
+    }
+    if (formDataFromBackend.end_time) {
+        document.getElementById('endDate').value = formDataFromBackend.end_time;
+    }
+    if (formDataFromBackend.reason) {
+        document.getElementById('reason').value = formDataFromBackend.reason;
+    }
+});
+</script>
+</body></html>
+

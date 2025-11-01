@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业智能助手</title>
+    <!-- 引入 Poppins 字体和 Font Awesome 图标 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3a7bd5;
+            --primary-dark: #2a5db0;
+            --secondary-color: #00d2ff;
+            --background-start: #a8c0ff;
+            --background-end: #3f2b96;
+            --chat-bg: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .main-layout {
+            width: 95%;
+            max-width: 1400px;
+            height: 90vh;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            transition: all 0.5s ease;
+        }
+
+        .contacts-panel {
+            width: 250px;
+            min-width: 250px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .contacts-header {
+            padding: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #374151;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .contact-search {
+            padding: 15px 10px;
+        }
+
+        .contact-search input {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            background-color: #f9fafb;
+            font-size: 0.9rem;
+        }
+
+        .contact-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 10px 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .contact-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .contact-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .contact-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.95rem;
+        }
+
+        .contact-status-text {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .online {
+            background-color: #10b981;
+        }
+
+        .offline {
+            background-color: #9ca3af;
+        }
+
+        .chat-container {
+            flex-grow: 1;
+            min-width: 400px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--chat-bg);
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            padding: 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .chat-title {
+            flex: 1 1 180px;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            flex: 2 1 280px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .shortcut-scroll {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 1 360px;
+            max-width: clamp(220px, 35vw, 420px);
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+        }
+
+        .shortcut-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .shortcut-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 999px;
+        }
+
+        .shortcut-chip {
+            flex-shrink: 0;
+            border: none;
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(2px);
+            cursor: pointer;
+            transition: background-color 0.25s ease, transform 0.2s ease;
+        }
+
+        .shortcut-chip:hover,
+        .shortcut-chip:focus-visible {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .shortcut-chip:active {
+            transform: translateY(0);
+        }
+
+        .shortcut-select {
+            display: none;
+            border-radius: 999px;
+            border: none;
+            padding: 6px 28px 6px 12px;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            background: rgba(255, 255, 255, 0.85);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg fill='%232a5db0' height='24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 16px;
+            cursor: pointer;
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover:not([disabled]),
+        .header-btn:focus-visible {
+            background-color: rgba(255, 255, 255, 0.32);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+            outline: none;
+        }
+
+        .header-btn[disabled] {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .messages-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            background-color: var(--chat-bg);
+            padding: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #e5e7eb;
+        }
+
+        .messages-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages-wrapper::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message img {
+            min-width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            object-fit: cover;
+        }
+
+        .message-content {
+            background-color: white;
+            padding: 12px 18px;
+            border-radius: 20px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .user .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot .message-content {
+            border-bottom-left-radius: 4px;
+            text-align: left;
+        }
+
+        .message-time {
+            display: block;
+            font-size: 0.7rem;
+            margin-top: 8px;
+            color: rgba(0, 0, 0, 0.38);
+            text-align: right;
+        }
+
+        .user .message-time {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .bot-link {
+            color: var(--primary-dark);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px dashed transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .bot-link:hover,
+        .bot-link:focus-visible {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .typing-indicator .message-content {
+            background-color: #e5e7eb;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #6b7280;
+            border-radius: 50%;
+            animation: dot-flashing 1.2s infinite alternate;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            padding: 15px 20px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .media-bar {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 10px;
+        }
+
+        .media-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: color 0.2s;
+        }
+
+        .media-btn:hover,
+        .media-btn:focus-visible {
+            color: var(--primary-color);
+            outline: none;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-row input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 24px;
+            background-color: #f9fafb;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-row input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 1px var(--primary-color);
+        }
+
+        .input-row button {
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .input-row button:hover:not([disabled]),
+        .input-row button:focus-visible {
+            background-color: var(--primary-dark);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .input-row button[disabled] {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .command-panel {
+            width: 320px;
+            min-width: 320px;
+            background-color: #f9fafb;
+            border-left: 1px solid #e0e0e0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .command-panel h3 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-section {
+            margin-bottom: 25px;
+        }
+
+        .feature-section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #4b5563;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(58, 123, 213, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .feature-card-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .feature-card-title {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .feature-card-desc {
+            font-size: 0.8rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .command-group {
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .command-item {
+            padding: 8px 0;
+            border-bottom: 1px dashed #f3f4f6;
+            cursor: pointer;
+        }
+
+        .command-item:last-child {
+            border-bottom: none;
+        }
+
+        .command-item:hover .command-name,
+        .command-item:focus-visible .command-name {
+            color: var(--primary-dark);
+            outline: none;
+        }
+
+        .command-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.95rem;
+        }
+
+        .command-desc {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .command-tag {
+            background-color: #e0f2f1;
+            color: #047857;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+
+        @keyframes dot-flashing {
+            0% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .command-panel {
+                display: none;
+            }
+            .main-layout {
+                max-width: 900px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                width: 100%;
+                height: 100vh;
+                max-width: none;
+                border-radius: 0;
+            }
+            .contacts-panel {
+                display: none;
+            }
+            .chat-container {
+                width: 100%;
+                max-width: none;
+                border-radius: 0;
+            }
+            body {
+                align-items: flex-start;
+                padding-top: 0;
+            }
+            .header {
+                border-radius: 0;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                gap: 12px;
+            }
+            .header-actions {
+                flex: 1 1 100%;
+                justify-content: flex-start;
+            }
+            .shortcut-scroll {
+                display: none;
+            }
+            .shortcut-select {
+                display: inline-block;
+            }
+            .header-btn {
+                margin-left: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <div class="contacts-panel">
+            <div class="contacts-header">
+                联系人
+            </div>
+            <div class="contact-search">
+                <input type="text" placeholder="搜索同事..." aria-label="搜索同事">
+            </div>
+            <div class="contact-list" id="contactList"></div>
+        </div>
+
+        <div class="chat-container">
+            <div class="header">
+                <span class="chat-title">企业智能助手</span>
+                <div class="header-actions">
+                    <div class="shortcut-scroll" id="headerShortcuts" aria-label="常用快捷指令"></div>
+                    <select id="shortcutSelect" class="shortcut-select" aria-label="移动端快捷指令">
+                        <option value="">常用指令…</option>
+                    </select>
+                    <button type="button" class="header-btn" id="clearBtn" onclick="clearChat()">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                        <span style="margin-left:6px;">清除</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages-wrapper" id="chatMessages"></div>
+
+            <div class="input-area">
+                <div class="media-bar">
+                    <button class="media-btn" title="发送表情包" onclick="handleMediaInput('emoji')">
+                        <i class="far fa-smile"></i>
+                    </button>
+                    <button class="media-btn" title="发送图片" onclick="handleMediaInput('image')">
+                        <i class="far fa-image"></i>
+                    </button>
+                    <button class="media-btn" title="发送语音" onclick="handleMediaInput('voice')">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+                <div class="input-row">
+                    <input type="text" id="userMessage" placeholder="输入您的消息或 @快捷指令..." autocomplete="off" aria-label="聊天输入">
+                    <button id="sendBtn" type="button" onclick="prepareAndSendMessage()" aria-label="发送">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-panel" id="commandPanel">
+            <h3><i class="fas fa-th-large"></i> 功能中心</h3>
+            
+            <!-- 企业功能模块 -->
+            <div class="feature-section">
+                <div class="feature-section-title">
+                    <i class="fas fa-building"></i> 企业功能
+                </div>
+                <div class="feature-card" onclick="openFeature('project')">
+                    <span class="feature-card-icon">📁</span>
+                    <div class="feature-card-title">项目文件库</div>
+                    <div class="feature-card-desc">查看和管理项目文档、资料和文件共享</div>
+                </div>
+                <div class="feature-card" onclick="openFeature('meeting')">
+                    <span class="feature-card-icon">📅</span>
+                    <div class="feature-card-title">会议预定</div>
+                    <div class="feature-card-desc">预定会议室、查看会议日程和参会人员</div>
+                </div>
+                <div class="feature-card" onclick="openFeature('resource')">
+                    <span class="feature-card-icon">🔗</span>
+                    <div class="feature-card-title">资源共享</div>
+                    <div class="feature-card-desc">共享资源链接、文档和工具给团队成员</div>
+                </div>
+            </div>
+
+            <!-- 快捷指令中心 -->
+            <div class="feature-section">
+                <div class="feature-section-title">
+                    <i class="fas fa-bolt"></i> 快捷指令
+                </div>
+                <div class="command-group">
+                    <div class="command-item" onclick="useCommand('@请假')" tabindex="0">
+                        <span class="command-tag">@请假</span>
+                        <span class="command-name">请假申请</span>
+                        <div class="command-desc">快速发起年假、病假等申请流程。</div>
+                    </div>
+                    <div class="command-item" onclick="useCommand('@出差')" tabindex="0">
+                        <span class="command-tag">@出差</span>
+                        <span class="command-name">出差报备</span>
+                        <div class="command-desc">一键填写出差目的地、日期和事由。</div>
+                    </div>
+                    <div class="command-item" onclick="useCommand('@日程')" tabindex="0">
+                        <span class="command-tag">@日程</span>
+                        <span class="command-name">日程管理</span>
+                        <div class="command-desc">查看、创建和修改您的个人及团队日程。</div>
+                    </div>
+                </div>
+
+                <div class="command-group">
+                    <div class="command-item" onclick="useCommand('@通讯录查询')" tabindex="0">
+                        <span class="command-tag">@通讯录查询</span>
+                        <span class="command-name">查询同事信息</span>
+                        <div class="command-desc">快速查找同事的电话、邮箱和部门。</div>
+                    </div>
+                    <div class="command-item" onclick="useCommand('@邮箱')" tabindex="0">
+                        <span class="command-tag">@邮箱</span>
+                        <span class="command-name">邮件发送</span>
+                        <div class="command-desc">通过口头指令起草并发送邮件。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userAvatar = 'https://i.pravatar.cc/150?img=1';
+        let botAvatar = 'https://i.pravatar.cc/150?img=5';
+
+        const COLLEAGUES = [
+            { name: "李华 (Li Hua)", status: "online", role: "项目经理", img: "https://i.pravatar.cc/150?img=10" },
+            { name: "张明 (Ming Zhang)", status: "online", role: "软件工程师", img: "https://i.pravatar.cc/150?img=12" },
+            { name: "王芳 (Wang Fang)", status: "offline", role: "设计总监", img: "https://i.pravatar.cc/150?img=15" },
+            { name: "赵雷 (Lei Zhao)", status: "online", role: "人力资源", img: "https://i.pravatar.cc/150?img=18" },
+            { name: "陈薇 (Chen Wei)", status: "offline", role: "市场专员", img: "https://i.pravatar.cc/150?img=20" }
+        ];
+
+        const quickCommands = {
+            '@请假': '/quick/leave',
+            '@leave': '/quick/leave',
+            '@通讯录': '/quick/contact',
+            '@通讯录查询': '/quick/contact',
+            '@contact': '/quick/contact',
+            '@邮箱': '/quick/email',
+            '@邮件': '/quick/email',
+            '@email': '/quick/email',
+            '@出差': '/quick/trip',
+            '@trip': '/quick/trip',
+            '@日程': '/quick/schedule',
+            '@日程管理': '/quick/schedule',
+            '@schedule': '/quick/schedule',
+            '@calendar': '/quick/schedule'
+        };
+
+        const HEADER_SHORTCUTS = [
+            { code: '@请假', label: '请假申请' },
+            { code: '@出差', label: '出差报备' },
+            { code: '@日程', label: '日程管理' },
+            { code: '@通讯录查询', label: '查通讯录' },
+            { code: '@邮箱', label: '发送邮件' }
+        ];
+
+        const inputEl = document.getElementById('userMessage');
+        const btnEl = document.getElementById('sendBtn');
+        const chatMessagesContainer = document.getElementById('chatMessages');
+        const contactListEl = document.getElementById('contactList');
+        const headerShortcutsContainer = document.getElementById('headerShortcuts');
+        const shortcutSelectEl = document.getElementById('shortcutSelect');
+
+        let typingEl = null;
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function addMessage(sender, message, avatar, time) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            const formattedMessage = message.replace(/\n/g, '<br>');
+
+            messageDiv.innerHTML = `
+                <img src="${avatar}" alt="${sender === 'user' ? '用户头像' : '机器人头像'}" onerror="this.onerror=null;this.src='${sender === 'user' ? 'https://via.placeholder.com/40/3a7bd5/ffffff?text=U' : 'https://via.placeholder.com/40/00d2ff/ffffff?text=B'}';">
+                <div class="message-content">
+                    ${formattedMessage}
+                    <span class="message-time">${time}</span>
+                </div>
+            `;
+            chatMessagesContainer.appendChild(messageDiv);
+            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            typingEl = document.createElement('div');
+            typingEl.className = 'message bot typing-indicator';
+            typingEl.innerHTML = `
+                <img src="${botAvatar}" alt="机器人头像">
+                <div class="message-content">
+                    <span>正在思考</span>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <span class="message-time">${getCurrentTime()}</span>
+                </div>
+            `;
+            chatMessagesContainer.appendChild(typingEl);
+            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            if (typingEl && typingEl.parentNode) {
+                typingEl.parentNode.removeChild(typingEl);
+            }
+            typingEl = null;
+        }
+
+        function displayMessage(sender, message) {
+            const avatar = sender === 'user' ? userAvatar : botAvatar;
+            addMessage(sender, message, avatar, getCurrentTime());
+        }
+
+        window.clearChat = function () {
+            chatMessagesContainer.innerHTML = '';
+            displayInitialMessage();
+        };
+
+        function detectQuickCommand(message) {
+            const trimmed = message.trim().toLowerCase();
+            for (const [cmd, url] of Object.entries(quickCommands)) {
+                if (trimmed === cmd.toLowerCase() || trimmed.startsWith(cmd.toLowerCase() + ' ')) {
+                    return url;
+                }
+            }
+            return null;
+        }
+
+        function renderColleagues() {
+            contactListEl.innerHTML = COLLEAGUES.map(colleague => {
+                const statusClass = colleague.status === 'online' ? 'online' : 'offline';
+                const statusText = colleague.status === 'online' ? '在线' : '离线';
+                return `
+                    <div class="contact-item" onclick="startChatWithColleague('${colleague.name}')" tabindex="0">
+                        <img src="${colleague.img}" alt="${colleague.name}头像" onerror="this.onerror=null;this.src='https://via.placeholder.com/40/cccccc/000000?text=${colleague.name[0]}';">
+                        <div class="contact-info">
+                            <span class="contact-name">${colleague.name}</span>
+                            <span class="contact-status-text">${colleague.role}</span>
+                        </div>
+                        <div class="status-dot ${statusClass}" title="${statusText}"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderHeaderShortcuts() {
+            if (!headerShortcutsContainer) return;
+
+            headerShortcutsContainer.innerHTML = '';
+            HEADER_SHORTCUTS.forEach(shortcut => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'shortcut-chip';
+                button.textContent = shortcut.label;
+                button.title = `${shortcut.label} (${shortcut.code})`;
+                button.addEventListener('click', () => useCommand(shortcut.code));
+                headerShortcutsContainer.appendChild(button);
+
+                if (shortcutSelectEl) {
+                    const option = document.createElement('option');
+                    option.value = shortcut.code;
+                    option.textContent = shortcut.label;
+                    shortcutSelectEl.appendChild(option);
+                }
+            });
+
+            if (shortcutSelectEl) {
+                shortcutSelectEl.addEventListener('change', (event) => {
+                    const value = event.target.value;
+                    if (value) {
+                        useCommand(value);
+                    }
+                });
+            }
+        }
+
+        window.startChatWithColleague = function (name) {
+            console.log(`正在模拟启动与 ${name} 的私聊窗口...`);
+            displayMessage('bot', `您好，企业智能助手目前处于主模式。如需与 **${name}** 沟通，请切换到私聊模式。`);
+        };
+
+        window.useCommand = function (command) {
+            if (!command) return;
+            inputEl.value = command.trim() + ' ';
+            inputEl.focus();
+            if (shortcutSelectEl) {
+                shortcutSelectEl.value = '';
+            }
+        };
+
+        // 处理企业功能模块点击
+        window.openFeature = function (featureType) {
+            const featureMessages = {
+                'project': '查看项目文件库',
+                'meeting': '预定会议',
+                'resource': '查看资源共享'
+            };
+            
+            const query = featureMessages[featureType] || `打开${featureType}功能`;
+            
+            // 显示提示消息并发送查询
+            displayMessage('user', query, userAvatar, getCurrentTime());
+            setTimeout(() => {
+                fetch('/send_message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: query })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.answer) {
+                        displayMessage('bot', data.answer, botAvatar, getCurrentTime());
+                    } else {
+                        // 如果是新功能，提供友好的响应
+                        const responses = {
+                            'project': '项目文件库功能正在开发中。您可以通过聊天告诉我需要查看哪个项目的文件，我会帮您查找相关信息。',
+                            'meeting': '会议预定功能正在开发中。您可以通过聊天告诉我会议时间和参会人员，我会帮您安排。',
+                            'resource': '资源共享功能正在开发中。您可以通过聊天分享资源链接或文档，我会帮您整理。'
+                        };
+                        displayMessage('bot', responses[featureType] || '该功能正在开发中，敬请期待！', botAvatar, getCurrentTime());
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayMessage('bot', '抱歉，处理请求时出现错误。', botAvatar, getCurrentTime());
+                });
+            }, 300);
+        };
+
+        window.handleMediaInput = function (type) {
+            const message = `[系统提示] 您尝试发送一个**${type === 'emoji' ? '表情包' : type === 'image' ? '图片' : '语音'}**。在实际应用中，这里会打开一个文件选择器或录音界面。`;
+            displayMessage('user', `发送 ${type}...`);
+            displayMessage('bot', message);
+        };
+
+        window.prepareAndSendMessage = function () {
+            const userMessage = inputEl.value.trim();
+            if (userMessage === '') return;
+
+            btnEl.disabled = true;
+
+            const quickUrl = detectQuickCommand(userMessage);
+            if (quickUrl) {
+                displayMessage('user', userMessage);
+                inputEl.value = '';
+
+                setTimeout(() => {
+                    displayMessage('bot', `正在为您打开 **${userMessage.replace(/@/g, '')}** 相关的工具页面... <a href="${quickUrl}" target="_blank" class="bot-link">点击打开</a>`);
+                    btnEl.disabled = false;
+                }, 500);
+
+                return;
+            }
+
+            sendMessageToAPI(userMessage);
+        };
+
+        function sendMessageToAPI(userMessage) {
+            const prevIcon = btnEl.innerHTML;
+            btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            showTyping();
+
+            fetch('/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideTyping();
+                btnEl.disabled = false;
+                btnEl.innerHTML = prevIcon;
+
+                if (data.answer) {
+                    displayMessage('bot', data.answer, botAvatar, getCurrentTime());
+                } else {
+                    displayMessage('bot', '抱歉,处理您的请求时出现了错误。', botAvatar, getCurrentTime());
+                }
+            })
+            .catch(error => {
+                console.error('请求出错:', error);
+                hideTyping();
+                btnEl.disabled = false;
+                btnEl.innerHTML = prevIcon;
+                displayMessage('bot', '抱歉,网络或服务异常，请稍后再试。', botAvatar, getCurrentTime());
+            });
+        }
+
+        function displayInitialMessage() {
+            addMessage('bot', '您好！我是您的企业智能助手，很高兴为您服务', botAvatar, getCurrentTime());
+        }
+
+        inputEl.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                prepareAndSendMessage();
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList && e.target.classList.contains('bot-link')) {
+                e.preventDefault();
+                window.open(e.target.href, '_blank');
+            }
+        }, true);
+
+        renderColleagues();
+        renderHeaderShortcuts();
+        displayInitialMessage();
+        inputEl.focus();
+    </script>
+</body>
+</html>

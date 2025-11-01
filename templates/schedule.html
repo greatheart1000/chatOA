@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>日程管理</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A90E2",
+                        "background-light": "#F4F5F7",
+                        "background-dark": "#111621",
+                        "text-light": "#333333",
+                        "text-dark": "#EAEAEA",
+                        "border-light": "#E0E0E0",
+                        "border-dark": "#2D3748",
+                        "muted-light": "#666666",
+                        "muted-dark": "#A0AEC0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+<div class="flex h-screen w-full">
+<aside class="w-64 flex-shrink-0 border-r border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-4 flex flex-col justify-between">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary text-white rounded-lg p-2">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-text-light dark:text-text-dark text-base font-bold leading-normal">日程管理</h1>
+<p class="text-muted-light dark:text-muted-dark text-sm font-normal leading-normal">工作空间</p>
+</div>
+</div>
+<button onclick="window.location.href='/'" class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark text-sm font-bold leading-normal tracking-[0.015em] gap-2">
+<span class="material-symbols-outlined text-base">arrow_back</span>
+<span class="truncate">返回聊天</span>
+</button>
+<div class="flex flex-col gap-4">
+<div class="flex min-w-full flex-1 flex-col gap-0.5">
+<div class="flex items-center p-1 justify-between">
+<p class="text-text-light dark:text-text-dark text-sm font-bold leading-tight flex-1 text-center" id="currentMonth">2024年10月</p>
+<div class="flex">
+<button onclick="changeMonth(-1)">
+<span class="material-symbols-outlined text-muted-light dark:text-muted-dark text-xl">chevron_left</span>
+</button>
+<button onclick="changeMonth(1)">
+<span class="material-symbols-outlined text-muted-light dark:text-muted-dark text-xl">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-7 text-xs text-center text-muted-light dark:text-muted-dark font-medium">
+<p class="h-8 w-full flex items-center justify-center">日</p>
+<p class="h-8 w-full flex items-center justify-center">一</p>
+<p class="h-8 w-full flex items-center justify-center">二</p>
+<p class="h-8 w-full flex items-center justify-center">三</p>
+<p class="h-8 w-full flex items-center justify-center">四</p>
+<p class="h-8 w-full flex items-center justify-center">五</p>
+<p class="h-8 w-full flex items-center justify-center">六</p>
+<div id="calendarDays"></div>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light dark:border-border-dark px-6 py-3 bg-white dark:bg-background-dark flex-shrink-0">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button onclick="goToToday()" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-background-light dark:bg-border-dark text-text-light dark:text-text-dark text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">今天</span>
+</button>
+</div>
+<p class="text-text-light dark:text-text-dark text-xl font-semibold leading-tight tracking-[-0.033em]" id="headerMonth">2024年10月</p>
+</div>
+<div class="flex flex-1 justify-center gap-8">
+<div class="flex h-10 w-72 items-center justify-center rounded-lg bg-background-light dark:bg-border-dark p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-background-dark has-[:checked]:shadow-sm has-[:checked]:text-text-light dark:has-[:checked]:text-text-dark text-muted-light dark:text-muted-dark text-sm font-medium leading-normal">
+<span class="truncate">周</span>
+<input checked="" class="invisible w-0" name="view-toggle" type="radio" value="Week"/>
+</label>
+</div>
+</div>
+</header>
+<div id="scheduleContent" class="flex-1 overflow-auto">
+<div class="p-6">
+<p class="text-text-light-secondary dark:text-text-dark-secondary">请通过聊天界面查询日程安排</p>
+</div>
+</div>
+</main>
+</div>
+<script>
+let currentDate = new Date();
+const scheduleData = {{ schedule_data|safe if schedule_data else '{"schedules": [], "weather": {}}' }};
+
+function updateCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    document.getElementById('currentMonth').textContent = `${year}年${month + 1}月`;
+    document.getElementById('headerMonth').textContent = `${year}年${month + 1}月`;
+    
+    // 生成日历
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const calendarDays = document.getElementById('calendarDays');
+    calendarDays.innerHTML = '';
+    
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'h-8 w-full';
+        calendarDays.appendChild(empty);
+    }
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayBtn = document.createElement('button');
+        dayBtn.className = 'h-8 w-full text-text-light dark:text-text-dark text-xs font-medium leading-normal';
+        dayBtn.innerHTML = `<div class="flex size-full items-center justify-center rounded-full">${day}</div>`;
+        dayBtn.onclick = () => loadSchedule(year, month + 1, day);
+        calendarDays.appendChild(dayBtn);
+    }
+}
+
+function changeMonth(direction) {
+    currentDate.setMonth(currentDate.getMonth() + direction);
+    updateCalendar();
+}
+
+function goToToday() {
+    currentDate = new Date();
+    updateCalendar();
+}
+
+function loadSchedule(year, month, day) {
+    const query = `查询${year}年${month}月${day}日的日程`;
+    fetch('/send_message', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ message: query })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.link) {
+            window.location.href = data.link;
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+updateCalendar();
+</script>
+</body></html>
+
