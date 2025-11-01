@@ -33,15 +33,6 @@
    - 对于技术水平较低的用户使用门槛高
    - 培训成本高
    - 
-<div style="display: flex; justify-content: space-around; align-items: flex-start;">
-    
-    <img src="images/多种用法.png" alt="多种用法" style="width: 30%; margin: 5px;">
-    
-    <img src="images/通讯录.png" alt="通讯录" style="width: 30%; margin: 5px;">
-    
-    <img src="images/请假页面.png" alt="请假页面" style="width: 30%; margin: 5px;">
-
-</div>
 
 
 
@@ -288,6 +279,7 @@ python app.py
 - 研究和演示项目：展示AI在OA系统中的落地方式
 
 - 学术研究项目：探索大模型在办公自动化中的应用
+
 
 
 
